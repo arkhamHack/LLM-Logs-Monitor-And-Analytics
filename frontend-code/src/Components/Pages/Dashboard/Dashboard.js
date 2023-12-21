@@ -4,15 +4,13 @@ import Dropdown from 'react-bootstrap/Dropdown';
 import axios from 'axios';
 import Form from 'react-bootstrap/Form';
 import Button from 'react-bootstrap/Button';
-import BootstrapTable from 'react-bootstrap-table-next';
-import 'react-bootstrap-table-next/dist/react-bootstrap-table2.min.css';
 import Dots from "react-activity/dist/Dots";
 import "react-activity/dist/Dots.css";
 
-const apiUrl = process.env.REACT_APP_NESTJS_API_URL ;
+const apiUrl = process.env.REACT_APP_NESTJS_API_URL;
 
 const Dashboard = () => {
-  const opertaion_values = ["=", ">", "<", ">=", "<=","!=", "not like", "not null", "is null", "like"];
+  const opertaion_values = ["=", ">", "<", ">=", "<=", "!=", "not like", "not null", "is null", "like"];
   const [columns, setColumns] = useState([]);
   const [tableColumns, setTableColumns] = useState([]);
   const [loadingMetricUsage, setLoadingMetricUsage] = useState(false);
@@ -43,7 +41,7 @@ const Dashboard = () => {
   const defaultSorted = [{
     dataField: 'created_at',
     order: 'desc',
-    style: { whiteSpace: 'normal', overflow: 'hidden', textOverflow: 'ellipsis' ,width:500},
+    style: { whiteSpace: 'normal', overflow: 'hidden', textOverflow: 'ellipsis', width: 500 },
 
   }];
 
@@ -62,7 +60,7 @@ const Dashboard = () => {
           dataField: item.name.replace(" ", "_"),
           text: item.name,
           headerFormatter: columnFormatter,
-          style: { whiteSpace: 'normal', overflow: 'hidden',padding: "20px" ,width:500},
+          style: { whiteSpace: 'normal', overflow: 'hidden', padding: "20px", width: 500 },
           sort: true
         })
 
@@ -120,7 +118,7 @@ const Dashboard = () => {
       setConnector([]);
       setLoader(false);
 
-        console.log("err:", error);
+      console.log("err:", error);
     }
   }
 
@@ -259,24 +257,24 @@ const Dashboard = () => {
             </div>
             {loadingMetricUsage ? (
               <>
-               <div style={{ fontSize: 15, paddingTop: 15, paddingBottom: 5 }}>Data Metrics</div>
-                  <table className="metricResultTable">
-                    <thead>
-                      <tr>{Object.keys(metrics[0]).map((key) => (
-                        <th key={key} style={{ border: "1px solid #ddd", padding: "8px"}} >{key}</th>
+                <div style={{ fontSize: 15, paddingTop: 15, paddingBottom: 5 }}>Data Metrics</div>
+                <table className="metricResultTable">
+                  <thead>
+                    <tr>{Object.keys(metrics[0]).map((key) => (
+                      <th key={key} style={{ border: "1px solid #ddd", padding: "8px" }} >{key}</th>
+                    ))}
+
+
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr>
+                      {Object.values(metrics[0]).map((value, index) => (
+                        <td key={index} style={{ border: "1px solid #ddd", padding: "8px" }} >{value}</td>
                       ))}
-
-
-                      </tr>
-                    </thead>
-                    <tbody>
-                      <tr>
-                        {Object.values(metrics[0]).map((value, index) => (
-                          <td key={index} style={{ border: "1px solid #ddd", padding: "8px"}} >{value}</td>
-                        ))}
-                      </tr>
-                    </tbody>
-                  </table>
+                    </tr>
+                  </tbody>
+                </table>
                 <div style={{ fontSize: 15, padding: 10 }}>Requests Per Day Based On Applied Filters</div>
                 <table className="reqPerDayTable">
                   <tbody>
@@ -297,16 +295,26 @@ const Dashboard = () => {
 
             <div style={{ fontSize: 22, paddingTop: 20, paddingBottom: 10 }}>Logs Data</div>
 
-            {
+            <table className="logsDataTable">
+              <thead>
+                <tr>
+                  {Object.keys(data[0]).map((key) => (
+                    <th key={key} style={{ border: "1px solid #ddd", padding: "8px" }}>{key}</th>
+                  ))}
+                </tr>
+              </thead>
+              <tbody>
+                {data.map((item, rowIndex) => (
+                  <tr key={rowIndex}>
+                    {Object.entries(item).map(([key,value], colIndex) => (
+                      <td key={colIndex} style={{ border: "1px solid #ddd", padding: "8px" }}>{key === 'completion_status' ? (value ? 'true' : 'false') : value}
+                      </td>
+                    ))}
+                  </tr>
+                ))}
+              </tbody>
+            </table>
 
-              <BootstrapTable
-                bootstrap4
-                keyField="event_id"
-                data={data}
-                columns={tableColumns}
-                defaultSorted={defaultSorted}
-
-              />}
 
           </div>
         </div>
