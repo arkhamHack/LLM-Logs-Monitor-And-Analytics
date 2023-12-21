@@ -41,7 +41,7 @@ const Analytics = () => {
       if (field == 'failures' || field=='success'){
         field='status_code'
       }
-      const response = await fetch(`http://localhost:3000/clickhouse/logs_metrics_monitor/fetch_range_data?field_name=${field}&date_range=${timePeriod}`);
+      const response = await axios.get(`${apiUrl}/clickhouse/logs_metrics_monitor/fetch_range_data?field_name=${field}&date_range=${timePeriod}`);
       const data = await response.json();
 
       switch (field) {
