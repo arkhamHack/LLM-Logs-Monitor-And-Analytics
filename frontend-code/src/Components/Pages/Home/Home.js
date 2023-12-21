@@ -17,8 +17,8 @@ const Home = () => {
   const [loader, setLoader] = useState(false);
 
   const model_list = [
-    "gpt-3.5-turbo-instruct",
     "gpt-3.5-turbo-1106",
+    "gpt-3.5-turbo-instruct",
     "gpt-4-32k",
     "gpt-4",
     "gpt-4-1106-preview",
@@ -101,7 +101,7 @@ const Home = () => {
     <div className='home'>
       <div className='meta-section'>
         <div className='meta-model-input meta-input'>
-          <p style={{ marginRight: "10px" }}>Model:</p>
+          <p style={{ marginRight: "10px" }}>Model (recommend to use: gpt-3.5-turbo-1106):</p>
           <select value={selectedValue} onChange={handleDropdownChange}>
             <option value="">Select a model</option>
             {model_list.map((val, i) => (<option value={val} key={i}>{val}</option>))}

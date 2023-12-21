@@ -44,7 +44,7 @@ const Analytics = () => {
         field='status_code'
       }
       const response = await axios.get(`${apiUrl}/clickhouse/logs_metrics_monitor/fetch_range_data?field_name=${field}&date_range=${timePeriod}`);
-      const data = await response.json();
+      const data = await response.data;
 
       switch (field) {
         case 'event_id':
