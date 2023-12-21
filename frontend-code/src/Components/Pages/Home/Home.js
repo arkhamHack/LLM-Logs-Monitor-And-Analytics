@@ -4,7 +4,7 @@ import Dots from "react-activity/dist/Dots";
 import "react-activity/dist/Dots.css";
 import axios from 'axios';
 
-const apiUrl = process.env.REACT_APP_NESTJS_API_URL || 'http://localhost:3001';
+const apiUrl = process.env.REACT_APP_NESTJS_API_URL || 'https://llm-monitor-and-analysis-backend.onrender.com';
 console.log("URL: ",apiUrl)
 
 const Home = () => {
