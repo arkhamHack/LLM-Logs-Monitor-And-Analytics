@@ -9,8 +9,10 @@ import 'react-bootstrap-table-next/dist/react-bootstrap-table2.min.css';
 import Dots from "react-activity/dist/Dots";
 import "react-activity/dist/Dots.css";
 
+const apiUrl = process.env.REACT_APP_NESTJS_API_URL ;
+
 const Dashboard = () => {
-  const opertaion_values = ["=", ">", "<", ">=", "<=", "not like", "not null", "is null", "like"];
+  const opertaion_values = ["=", ">", "<", ">=", "<=","!=", "not like", "not null", "is null", "like"];
   const [columns, setColumns] = useState([]);
   const [tableColumns, setTableColumns] = useState([]);
   const [loadingMetricUsage, setLoadingMetricUsage] = useState(false);
@@ -40,7 +42,9 @@ const Dashboard = () => {
 
   const defaultSorted = [{
     dataField: 'created_at',
-    order: 'desc'
+    order: 'desc',
+    style: { whiteSpace: 'normal', overflow: 'hidden', textOverflow: 'ellipsis' ,width:500},
+
   }];
 
   function columnFormatter(column, colIndex) {
@@ -51,24 +55,22 @@ const Dashboard = () => {
 
   const fetchColumns = async () => {
     try {
-      const res = await axios.get('http://localhost:3000/clickhouse/logs_metrics_monitor/columns');
+      const res = await axios.get(`${apiUrl}/clickhouse/logs_metrics_monitor/columns`);
       const updatedRes = res?.data?.data.map((item, index) => {
 
         return ({
           dataField: item.name.replace(" ", "_"),
           text: item.name,
           headerFormatter: columnFormatter,
-          style: { whiteSpace: 'normal', overflow: 'hidden', textOverflow: 'ellipsis' },
+          style: { whiteSpace: 'normal', overflow: 'hidden',padding: "20px" ,width:500},
           sort: true
         })
 
       })
       setTableColumns(updatedRes);
-      console.log("updated res:", updatedRes);
       return res.data.data;
 
     } catch (error) {
-      window.location.reload();
       console.error('Error fetching columns:', error);
 
     }
@@ -82,7 +84,7 @@ const Dashboard = () => {
 
   const fetchAllData = async () => {
     try {
-      const res = await axios.get('http://localhost:3000/clickhouse/logs_metrics_monitor/fetch_all_fields');
+      const res = await axios.get(`${apiUrl}/clickhouse/logs_metrics_monitor/fetch_all_fields`);
       setData(res.data);
       return res.data;
     } catch (error) {
@@ -99,7 +101,7 @@ const Dashboard = () => {
       const aggConditionsQueryParam = `agg_conditions=${encodeURIComponent(JSON.stringify([{ field: "latency", aggregateFunction: "avg" }, { field: "cost", aggregateFunction: "avg" }, { field: "latency", aggregateFunction: "quantile", aggVal: "0.95" }, { field: "status_code", aggregateFunction: "countIf", aggVal: "= '200'" }, { field: "status_code", aggregateFunction: "countIf", aggVal: "!= '200'" }, { field: "input_token", aggregateFunction: "sum" }, { field: "output_token", aggregateFunction: "sum" }]))}`;
       // const res = await axios.get(`http://localhost:3000/clickhouse/logs_metrics_monitor/filter?${conditionsQueryParam}&${connectorsQueryParam}`);
 
-      const res = await axios.get(`http://localhost:3000/clickhouse/logs_metrics_monitor/aggregates?${aggConditionsQueryParam}&${conditionsQueryParam}&${connectorsQueryParam}`)
+      const res = await axios.get(`${apiUrl}/clickhouse/logs_metrics_monitor/aggregates?${aggConditionsQueryParam}&${conditionsQueryParam}&${connectorsQueryParam}`)
       console.log("Res:", res.data)
       if (res.status === 200) {
         setMetrics(res.data.metricResult)
@@ -110,8 +112,15 @@ const Dashboard = () => {
       }
       return res.data;
     } catch (error) {
-window.location.reload();
-      console.log("err:", error);
+      setFilter([
+        { field: "", operation: "", value: "" },
+        { field: "", operation: "", value: "" },
+        { field: "", operation: "", value: "" }
+      ]);
+      setConnector([]);
+      setLoader(false);
+
+        console.log("err:", error);
     }
   }
 

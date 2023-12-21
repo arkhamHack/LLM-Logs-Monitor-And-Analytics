@@ -4,6 +4,8 @@ import ReactApexChart from 'react-apexcharts';
 import 'react-bootstrap-table-next/dist/react-bootstrap-table2.min.css';
 import Dots from "react-activity/dist/Dots";
 import "react-activity/dist/Dots.css";
+const apiUrl = process.env.REACT_APP_NESTJS_API_URL || 'http://localhost:3001';
+
 const Analytics = () => {
   const [timePeriod, setTimePeriod] = useState('5mins');
   const [requestsData, setRequestsData] = useState([]);
