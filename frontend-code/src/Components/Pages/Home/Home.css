@@ -1,0 +1,36 @@
+.meta-input {
+    display: flex;
+    align-items: center;
+}
+
+.io-section {
+    display: flex;
+    flex-direction: row;
+    height: 40%;
+    justify-content: space-around;
+}
+
+.io-sub {
+    width: 40%;
+}
+
+.home {
+    position: absolute;
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-end;
+    padding-top: 50px;
+}
+
+.left-nav {
+    padding-left: 10px;
+}
+
+input:focus, textarea:focus, option:focus, option:checked {
+    outline: none;
+}
+
+.meta-section {
+    margin-left: 20px;
+}
