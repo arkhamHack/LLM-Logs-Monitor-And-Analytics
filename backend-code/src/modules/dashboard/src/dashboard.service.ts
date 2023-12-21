@@ -41,7 +41,7 @@ export class DashboardService {
             compStatus = false;
 
         const event: DBData = {
-            event_id: id,
+            event_id: id.split("-")[1].slice(0, 10),
             created_at: new Date(created * 1000),
             user_id: origData.user_id,
             model: model,
