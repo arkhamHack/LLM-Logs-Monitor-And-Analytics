@@ -54,7 +54,6 @@ export class DashboardService {
             latency: latencyCal,
             cost: cost,
         };
-        console.log(event)
         return event;
     }
     private generateRandomEventId(): string {

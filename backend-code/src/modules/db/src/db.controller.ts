@@ -31,7 +31,6 @@ export class ClickHouseController{
 //endpoint to get columns of table
 @Get(':table/columns')
 async fetchColumns(@Param('table')tableName:string){
-    console.log("Called")
     this.clickHouseService.setTableName(tableName);
     return this.clickHouseService.fetchAllColumns();
 }

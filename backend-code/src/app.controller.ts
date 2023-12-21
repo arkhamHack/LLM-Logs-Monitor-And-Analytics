@@ -12,6 +12,7 @@ export class AppController {
   getHello(): string {
     return this.appService.getHello();
   }
+  
   @EventPattern('user-input')
   public async execute(@Payload() data: any, @Ctx() context: RmqContext) {
     const channel = context.getChannelRef();

@@ -27,7 +27,6 @@ export class ClickHouseService {
 
   private prepareQuery(conditions: FilterCondition[], connectors?: string[]): string {
     let dashboardConditions = '';
-    console.log(conditions[0])
     if (Array.isArray(conditions) && conditions.length > 0) {
       let conditionAltered = "";
       if (conditions.length == 1) {
@@ -121,7 +120,6 @@ export class ClickHouseService {
   //fetch all the data from the table in clickhouse
   async fetchAllRows(): Promise<any[]> {
     const query = `SELECT * FROM ${this.tableName} ORDER BY created_at`
-    console.log(query)
     const result = await this.clickhouse.query({ query: query, format: 'JSONEachRow' });
     return result.json();
   }
