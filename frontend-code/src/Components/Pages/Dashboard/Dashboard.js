@@ -7,7 +7,7 @@ import Button from 'react-bootstrap/Button';
 import Dots from "react-activity/dist/Dots";
 import "react-activity/dist/Dots.css";
 
-const apiUrl = process.env.REACT_APP_NESTJS_API_URL || 'https://llm-monitor-and-analysis-backend.onrender.com';
+const apiUrl = process.env.REACT_APP_NESTJS_API_URL || 'http://74.220.18.187/llm-metric-monitor-default-3000/';
 
 const Dashboard = () => {
   const opertaion_values = ["=", ">", "<", ">=", "<=", "!=", "not like", "not null", "is null", "like"];
