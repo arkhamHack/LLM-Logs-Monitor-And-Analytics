@@ -4,7 +4,7 @@ import Dots from "react-activity/dist/Dots";
 import "react-activity/dist/Dots.css";
 import axios from 'axios';
 
-const apiUrl = process.env.REACT_APP_NESTJS_API_URL || 'http://74.220.18.187/llm-metric-monitor-default-3000/';
+const apiUrl = process.env.REACT_APP_NESTJS_API_URL || 'http://74.220.18.187/llm-metric-monitor-default-3000';
 console.log("URL: ",apiUrl)
 
 const Home = () => {

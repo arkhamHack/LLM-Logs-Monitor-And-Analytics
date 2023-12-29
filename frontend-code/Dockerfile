@@ -8,7 +8,7 @@ RUN npm install
 
 COPY . .
 
-EXPOSE 3456
+EXPOSE 3000
 
 # Start the NestJS application
 CMD ["npm", "start"]
