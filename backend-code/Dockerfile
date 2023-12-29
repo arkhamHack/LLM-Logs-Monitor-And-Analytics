@@ -1,5 +1,5 @@
 # Use an official Node.js runtime as a parent image
-FROM node:20.10.0
+FROM --platform=linux/amd64 node:lts-alpine
 
 # Set the working directory to /app
 WORKDIR /app
@@ -12,7 +12,6 @@ RUN npm install
 COPY . .
 
 EXPOSE 3000
-
 
 # Start the NestJS application
 CMD ["npm", "run", "start:prod"]
