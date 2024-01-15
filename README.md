@@ -1,2 +1,4 @@
 # LLM-Logs-Monitor-And-Analytics
-llm metrics and logs monitoring dashboard and testing interface
+Dashboard for streaming openai prompts and measuring response metrics. 
+Analyse graphical data as well as dynamically query for required metrics.
+Hosted Link: https://llm-logs-monitor-and-analytics-frontend.vercel.app
