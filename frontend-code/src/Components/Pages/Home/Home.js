@@ -1,14 +1,16 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState } from "react";
 import "./Home.css";
 import Dots from "react-activity/dist/Dots";
 import "react-activity/dist/Dots.css";
-import axios from 'axios';
+import axios from "axios";
 
-const apiUrl = process.env.REACT_APP_NESTJS_API_URL || 'http://74.220.18.187/llm-metric-monitor-default-3000';
-console.log("URL: ",apiUrl)
+const apiUrl =
+  process.env.REACT_APP_NESTJS_API_URL ||
+  "https://llm-monitor-and-analysis-backend.onrender.com";
+console.log("URL: ", apiUrl);
 
 const Home = () => {
-  const [selectedValue, setSelectedValue] = useState('');
+  const [selectedValue, setSelectedValue] = useState("");
   const [username, setUsername] = useState("");
   const [apiKey, setApiKey] = useState(null);
   const [prompt, setPrompt] = useState("");
@@ -29,7 +31,7 @@ const Home = () => {
       if (eventSource) {
         eventSource.close();
       }
-    }
+    };
   }, [eventSource]);
 
   const handleDropdownChange = (event) => {
@@ -51,18 +53,21 @@ const Home = () => {
   const handlePromptSubmission = async () => {
     try {
       setLoader(true);
-      const res = await axios.post(`${apiUrl}/dashboard/logs_metrics_monitor/process-and-insert`, {
-        model: selectedValue,
-        user_id: username,
-        api_key: apiKey,
-        prompt,
-      });
+      const res = await axios.post(
+        `${apiUrl}/dashboard/logs_metrics_monitor/process-and-insert`,
+        {
+          model: selectedValue,
+          user_id: username,
+          api_key: apiKey,
+          prompt,
+        }
+      );
 
-      setPromptOutput('');
+      setPromptOutput("");
 
       if (res.status) {
         const newEventSource = new EventSource(`${apiUrl}/dashboard/sse`);
-        let previousEventData = '';
+        let previousEventData = "";
 
         newEventSource.onmessage = (event) => {
           let formattedData = previousEventData + event.data;
@@ -71,43 +76,52 @@ const Home = () => {
             formattedData = formattedData.slice(1);
           }
 
-          if (event.data.trim() === '\\') {
+          if (event.data.trim() === "\\") {
             previousEventData = formattedData;
             return;
           }
 
-          formattedData = formattedData.replace(/\\n/g, '\n').replace(/\\\\n/g, '\n').replace(/\\t/g, '\t');
+          formattedData = formattedData
+            .replace(/\\n/g, "\n")
+            .replace(/\\\\n/g, "\n")
+            .replace(/\\t/g, "\t");
           setPromptOutput((prevOutput) => prevOutput + formattedData);
-          previousEventData = '';
+          previousEventData = "";
         };
 
         newEventSource.onerror = (error) => {
-          console.error('SSE connection error', error);
+          console.error("SSE connection error", error);
           newEventSource.close();
         };
 
         setEventSource(newEventSource);
       } else {
-        console.error('Failed to submit prompt');
+        console.error("Failed to submit prompt");
       }
     } catch (error) {
-      console.error('Error during prompt submission:', error);
+      console.error("Error during prompt submission:", error);
     } finally {
       setLoader(false);
     }
-  }
+  };
 
   return (
-    <div className='home'>
-      <div className='meta-section'>
-        <div className='meta-model-input meta-input'>
-          <p style={{ marginRight: "10px" }}>Model (recommend to use: gpt-3.5-turbo-1106):</p>
+    <div className="home">
+      <div className="meta-section">
+        <div className="meta-model-input meta-input">
+          <p style={{ marginRight: "10px" }}>
+            Model (recommend to use: gpt-3.5-turbo-1106):
+          </p>
           <select value={selectedValue} onChange={handleDropdownChange}>
             <option value="">Select a model</option>
-            {model_list.map((val, i) => (<option value={val} key={i}>{val}</option>))}
+            {model_list.map((val, i) => (
+              <option value={val} key={i}>
+                {val}
+              </option>
+            ))}
           </select>
         </div>
-        <div className='meta-username-input meta-input'>
+        <div className="meta-username-input meta-input">
           <p style={{ marginRight: "10px" }}>Username:</p>
           <input
             type="text"
@@ -116,7 +130,7 @@ const Home = () => {
             placeholder="Enter user_id"
           />
         </div>
-        <div className='meta-apikey-input meta-input'>
+        <div className="meta-apikey-input meta-input">
           <p style={{ marginRight: "10px" }}>(Optional) OpenAI Api Key:</p>
           <input
             type="text"
@@ -126,8 +140,8 @@ const Home = () => {
           />
         </div>
       </div>
-      <div className='io-section'>
-        <div className='left-io io-sub'>
+      <div className="io-section">
+        <div className="left-io io-sub">
           <p>Input Prompt</p>
           <textarea
             type="text"
@@ -136,11 +150,17 @@ const Home = () => {
             placeholder="Enter Prompt..."
             style={{ height: "90%", width: "100%" }}
           />
-          <button className='submit-prompt' onClick={handlePromptSubmission}>Submit Prompt</button>
+          <button className="submit-prompt" onClick={handlePromptSubmission}>
+            Submit Prompt
+          </button>
         </div>
-        <div className='right-io io-sub'>
+        <div className="right-io io-sub">
           <p>Output Prompt</p>
-          {loader ? <div style={{ position: "absolute", bottom: "50%", left: "50%" }}><Dots /></div> :
+          {loader ? (
+            <div style={{ position: "absolute", bottom: "50%", left: "50%" }}>
+              <Dots />
+            </div>
+          ) : (
             <textarea
               type="text"
               value={promptOutput}
@@ -148,11 +168,11 @@ const Home = () => {
               contentEditable={false}
               style={{ height: "90%", width: "100%" }}
             />
-          }
+          )}
         </div>
       </div>
     </div>
   );
-}
+};
 
 export default Home;
